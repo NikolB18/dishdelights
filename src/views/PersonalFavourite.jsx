@@ -1,11 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../App.css';
 
-function PersonalFavourite() {
-    const [recipes, setRecipes] = useState([]);
+export default function PersonalFavoutite() {
+    const [recipes, setRecipes] = useState(() => {
+        const savedRecipes = localStorage.getItem('personalRecipes');
+        return savedRecipes ? JSON.parse(savedRecipes) : [];
+    });
+
     const [currentRecipe, setCurrentRecipe] = useState({ title: '', content: '' });
     const [isEditing, setIsEditing] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
+
+   
+    useEffect(() => {
+        localStorage.setItem('personalRecipes', JSON.stringify(recipes));
+    }, [recipes]);
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -92,4 +101,3 @@ function PersonalFavourite() {
     );
 }
 
-export default PersonalFavourite;
